@@ -6,7 +6,7 @@ function path = findGmshPath()
     
     if ispc 
         % Chemin par defaut de windows (les stations des salles CAO du DGM)
-        gmsh_path = 'C:\Program Files\GMSH\gmsh.exe';
+        gmsh_path = 'C:\GMSH\gmsh.exe';
     elseif ismac
         % Chemin par defaut pour un mac
         gmsh_path = '/Applications/Gmsh.app/Contents/MacOS/gmsh';

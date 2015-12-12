@@ -1,5 +1,8 @@
 *.pos
 *.m~
 *.msh
+*.asv
+*.avi
+*.mp4
 
-correction/
+html/

@@ -1,11 +1,16 @@
-function [N,J] = shapesFunctions(omega,a,x,od)
+function [N,J] = shapesFunctions(omega,a,x,od,ncomp)
 % Evalue les fonctions de forme (ou ses derivees) aux points de quadratures
 % a sur l'elements dont les coordonnees des noeuds sont dans x, connaissant
 % le maillage support.
+%
+% V1.1 : Ajout de la dimension du problème dans le kron de définition de N
+% (Cas od=0, pour pt_Gauss)
 
     type = omega.type;
     order = omega.order;
-    
+    if nargin == 4;
+        ncomp = 2;
+    end;
     % Coefficients polynomiaux (pour les elements d'ordre 3-4 triangulaires)
     if type == 2 && order > 2
         C1 = [1 0 0 0 0 0 0 0 0 0;-5.5 1 0 9 -4.5 0 0 0 0 0;-5.5 0 1 0 0 0 0 -4.5 9 0;9 -4.5 0 -22.5 18 0 0 0 0 0;9 0 -4.5 0 0 0 0 18 -22.5 0;18 0 0 -22.5 4.5 -4.5 -4.5 4.5 -22.5 27;-4.5 4.5 0 13.5 -13.5 0 0 0 0 0;-4.5 0 4.5 0 0 0 0 -13.5 13.5 0;-13.5 0 0 27 -13.5 13.5 0 0 13.5 -27;-13.5 0 0 13.5 0 0 13.5 -13.5 27 -27];
@@ -52,7 +57,7 @@ function [N,J] = shapesFunctions(omega,a,x,od)
             otherwise
                 error('Element inconnu');
         end
-        N = kron(N,eye(2));
+        N = kron(N,eye(ncomp));
     end
     
     % Derivative of shape function
@@ -93,6 +98,6 @@ function [N,J] = shapesFunctions(omega,a,x,od)
             J2 = blkdiag(M{:});
             N = J2\DN;
             N = kron(N(1:2:end,:),[1 0;0 0;0 1]) + kron(N(2:2:end,:),[0 0;0 1;1 0]);
-        end
+       end
     end
 end
